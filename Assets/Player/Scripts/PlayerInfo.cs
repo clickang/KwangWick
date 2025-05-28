@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerInfo : MonoBehaviour
 {
     /*
-     * 플레이어의 정보를 저장하는 스크립트입니다.
+     * [플레이어의 정보를 저장하는 스크립트입니다.]
      */
 
     #region Variables
