@@ -6,9 +6,19 @@ public class Target : MonoBehaviour
     public event Action OnTargetDestroyed;
 
     private bool isPeeking;
+    private int currentHealth;
 
     // 클래스 변수로 애니메이터 참조 추가
     [SerializeField] private Animator animator;
+    [SerializeField] private int maxHealth = 3;
+
+    void Start()
+    {
+        currentHealth = maxHealth;
+
+        if (animator == null)
+            animator = GetComponent<Animator>();
+    }
 
     public void Initialize(bool isPeeking)
     {
@@ -27,11 +37,6 @@ public class Target : MonoBehaviour
 
     private void SetupPeekingBehavior()
     {
-        if (animator == null)
-        {
-            animator = GetComponent<Animator>();
-        }
-
         // 랜덤하게 오른쪽(true) 또는 왼쪽(false)으로 설정
         bool isRight = UnityEngine.Random.Range(0, 2) == 0;
         animator.SetBool("right", isRight);
@@ -43,10 +48,7 @@ public class Target : MonoBehaviour
     private void SetupMovingBehavior()
     {
         Debug.Log(transform.position.x);
-        if (animator == null)
-        {
-            animator = GetComponent<Animator>();
-        }
+
         if (transform.position.x > -12f)
         {
             Debug.Log("left"); //x좌표 증가
@@ -59,18 +61,33 @@ public class Target : MonoBehaviour
         }
     }
 
+
+
+    // 타겟이 맞았을 때 호출되는 메서드
+    public void Hit(int damage)
+    {
+        if (currentHealth <=0 ) return;
+
+        currentHealth -= damage;
+        
+        /* 
+        타겟 피격 대미지 테스트
+        Debug.Log($"Hit! Remaining HP: {currentHealth}");
+        */
+
+        // 히트 효과, 점수 등의 로직
+        if (currentHealth <= 0)
+        {
+            ScoreManager.Instance?.AddScore(1); // 킬 점수 추가
+            DestroyTarget();
+        }
+    }
+
     // 타겟이 파괴될 때 (히트 또는 시간 초과)
     public void DestroyTarget()
     {
         OnTargetDestroyed?.Invoke();
         Destroy(gameObject);
-    }
-
-    // 타겟이 맞았을 때 호출되는 메서드
-    public void Hit()
-    {
-        // 히트 효과, 점수 등의 로직
-        DestroyTarget();
     }
 
     /* Test

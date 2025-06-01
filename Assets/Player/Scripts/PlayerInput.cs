@@ -5,42 +5,48 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour
 {
     /*
-     * [�÷��̾��� �Է��� ó���ϴ� ��ũ��Ʈ�Դϴ�.]
-     * �ϵ���� �Է��� ������ �����ϰ� ��ȯ�Ͽ� �ʿ��� �Լ��� �����մϴ�.
+     * [ÇÃ·¹ÀÌ¾îÀÇ ÀÔ·ÂÀ» Ã³¸®ÇÏ´Â ½ºÅ©¸³Æ®ÀÔ´Ï´Ù.]
+     * ÇÏµå¿þ¾î ÀÔ·ÂÀÌ µé¾î¿À¸é ÀûÀýÇÏ°Ô º¯È¯ÇÏ¿© ÇÊ¿äÇÑ ÇÔ¼ö·Î Àü´ÞÇÕ´Ï´Ù.
      */
 
     #region Variables
 
-    [Tooltip("������Ʈ")]
+    [Tooltip("ÄÄÆ÷³ÍÆ®")]
     [field: SerializeField, Header("Components")] FirstPersonCameraController CameraController { get; set; }
     [field: SerializeField] Animator Animator { get; set; }
     [field: SerializeField] SoundManager SoundManager { get; set; }
+    [field: SerializeField] Gun Gun { get; set; }
 
     #endregion
 
     #region Input Handlers
 
-    // ���콺 �������� ó���մϴ�.
+    // ¸¶¿ì½º ¿òÁ÷ÀÓÀ» Ã³¸®ÇÕ´Ï´Ù.
     public void OnLook(InputValue value)
     {
         CameraController.LookInput = value.Get<Vector2>();
     }
 
-    // ���콺 ���� ��ư�� ó���մϴ�.
+    // ¸¶¿ì½º ¿ÞÂÊ ¹öÆ°À» Ã³¸®ÇÕ´Ï´Ù.
     public void OnAttack()
     {
         Animator.SetTrigger("Fire");
         SoundManager.GunFire();
         CameraController.ApplyRecoil();
+
+        if (Gun != null)
+        {
+            Gun.Shoot();
+        }
     }
 
-    // Q ��ư�� ó���մϴ�.
+    // Q ¹öÆ°À» Ã³¸®ÇÕ´Ï´Ù.
     public void OnLeanLeft(InputValue value)
     {
         CameraController.LeanLeftToggle = value.Get<float>();
     }
 
-    // E ��ư�� ó���մϴ�.
+    // E ¹öÆ°À» Ã³¸®ÇÕ´Ï´Ù.
     public void OnLeanRight(InputValue value)
     {
         CameraController.LeanRightToggle = value.Get<float>();
@@ -63,6 +69,10 @@ public class PlayerInput : MonoBehaviour
         if(SoundManager == null)
         {
             SoundManager = GetComponentInChildren<SoundManager>();
+        }
+        if(Gun == null)
+        {
+            Gun = GetComponentInChildren<Gun>();
         }
     }
 

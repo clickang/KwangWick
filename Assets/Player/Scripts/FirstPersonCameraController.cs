@@ -91,7 +91,7 @@ public class FirstPersonCameraController : MonoBehaviour
     private void LookUpdate()
     {
         // 카메라 회전 입력을 가져와서 회전 각도를 계산합니다.
-        Vector2 lookInput = CameraSensitivity * Time.deltaTime * new Vector2(LookInput.x, LookInput.y);
+        Vector2 lookInput = CameraSensitivity * MouseSettings.sensitivity * Time.deltaTime * new Vector2(LookInput.x, LookInput.y);
         CurrentPitch -= lookInput.y * (InvertY ? -1f : 1f);
 
         // X방향 회전은 플레이어 전체가 회전하고 Y방향 회전은 카메라만 회전하도록 설정합니다.

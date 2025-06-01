@@ -4,7 +4,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     /*
-     * ���� ���� ����� �����ϴ� ��ũ��Ʈ�Դϴ�.
+     * »ç¿îµå °ü·Ã ±â´ÉÀ» ±¸ÇöÇÏ´Â ½ºÅ©¸³Æ®ÀÔ´Ï´Ù.
      */
 
     #region Variables
@@ -15,11 +15,24 @@ public class SoundManager : MonoBehaviour
 
     #region User Methods
 
-    // �ѱ� �߻� �Ҹ��� ����մϴ�.
+    // ÃÑ±â ¹ß»ç ¼Ò¸®¸¦ Àç»ýÇÕ´Ï´Ù.
     public void GunFire()
     {
+        if (AudioSourceList == null || AudioSourceList.Count == 0)
+        {
+            Debug.LogWarning("SoundManager: AudioSourceList가 비어 있음!");
+            return;
+        }
+
+        if (AudioSourceList[0].clip == null)
+        {
+            Debug.LogWarning("SoundManager: AudioSourceList[0]에 클립이 없음!");
+            return;
+        }
+
         AudioSourceList[0].PlayOneShot(AudioSourceList[0].clip);
-    }
+}
+
 
     #endregion
 }

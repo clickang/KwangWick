@@ -13,6 +13,24 @@ public class ChangeScene : MonoBehaviour
 
     public void ChangeSceneBtn()
     {
-        if (this.gameObject.name == "Start") SceneManager.LoadScene("SampleScene");
+        string btnName = this.gameObject.name;
+
+        if (btnName == "Start")
+        {
+            SceneManager.LoadScene("Gameplay");
+        }
+        else if (btnName == "Settings")
+        {
+            GameObject settingsPanel = GameObject.Find("settingsPanel");
+            if (settingsPanel != null)
+            {
+                settingsPanel.SetActive(true);
+            }
+        }
+        else if (btnName == "Exit")
+        {
+            Application.Quit();
+            Debug.Log("게임 종료됨.");
+        }
     }
 }

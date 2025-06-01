@@ -30,26 +30,49 @@ public class TargetSpawnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = peekingTargetTimers.Count - 1; i >= 0; i--)
+        if (peekingTargetTimers.Count > 0)
         {
-            peekingTargetTimers[i] -= Time.deltaTime;
-            if (peekingTargetTimers[i] <= 0)
+            List<int> indicesToRemove = new List<int>();
+            for (int i = 0; i < peekingTargetTimers.Count; i++)
             {
-                SpawnTarget(true);
-                peekingTargetTimers.RemoveAt(i);
+                peekingTargetTimers[i] -= Time.deltaTime;
+                if (peekingTargetTimers[i] <= 0f)
+                {
+                    SpawnTarget(true);
+                    indicesToRemove.Add(i);
+                }
+            }
+
+            // 역순 제거
+            for (int i = indicesToRemove.Count - 1; i >= 0; i--)
+            {
+                if (indicesToRemove[i] < peekingTargetTimers.Count)
+                    peekingTargetTimers.RemoveAt(indicesToRemove[i]);
             }
         }
 
-        for (int i = movingTargetTimers.Count - 1; i >= 0; i--)
+        if (movingTargetTimers.Count > 0)
         {
-            movingTargetTimers[i] -= Time.deltaTime;
-            if (movingTargetTimers[i] <= 0)
+            List<int> indicesToRemove = new List<int>();
+            for (int i = 0; i < movingTargetTimers.Count; i++)
             {
-                SpawnTarget(false);
-                movingTargetTimers.RemoveAt(i);
+                movingTargetTimers[i] -= Time.deltaTime;
+                if (movingTargetTimers[i] <= 0f)
+                {
+                    SpawnTarget(false);
+                    indicesToRemove.Add(i);
+                }
+            }
+
+            for (int i = indicesToRemove.Count - 1; i >= 0; i--)
+            {
+                if (indicesToRemove[i] < movingTargetTimers.Count)
+                    movingTargetTimers.RemoveAt(indicesToRemove[i]);
             }
         }
     }
+
+
 
     private void InitialSpawn()
     {
@@ -81,22 +104,40 @@ public class TargetSpawnManager : MonoBehaviour
             return;
         }
 
-        // 랜덤 스폰 포인트 선택
-        int spawnIndex = Random.Range(0, settings.spawnPoints.Length);
-        Transform spawnPoint = settings.spawnPoints[spawnIndex];
+        // 사용 가능한 스폰 포인트만 선택
+        List<Transform> availablePoints = new List<Transform>();
+        foreach (Transform point in settings.spawnPoints)
+        {
+            var sp = point.GetComponent<PreventSpawnOverlap>();
+            if (sp != null && !sp.IsOccupied)
+            {
+                availablePoints.Add(point);
+            }
+        }
 
-        // 타겟 생성
-        GameObject target = Instantiate(settings.targetPrefab, spawnPoint.position, spawnPoint.rotation);
+        if (availablePoints.Count == 0)
+        {
+            Debug.LogWarning("모든 스폰 포인트가 점유 중입니다!");
+            return;
+        }
+        
+        Transform chosenPoint = availablePoints[Random.Range(0, availablePoints.Count)];
+        var chosenScript = chosenPoint.GetComponent<PreventSpawnOverlap>();
+        chosenScript.SetOccupied(true);
 
-        // 필요한 컴포넌트 설정 (Target 스크립트가 있다고 가정)
+        GameObject target = Instantiate(settings.targetPrefab, chosenPoint.position, chosenPoint.rotation);
+
         if (target.TryGetComponent<Target>(out Target targetScript))
         {
             targetScript.Initialize(isPeeking);
-            targetScript.OnTargetDestroyed += () => HandleTargetDestroyed(target, isPeeking);
+            targetScript.OnTargetDestroyed += () =>
+            {
+                HandleTargetDestroyed(target, isPeeking);
+                chosenScript.SetOccupied(false); // 자리 비우기
+            };
         }
 
-        // 활성 리스트에 추가
-        activeList.Add(target);
+    activeList.Add(target);
     }
     
     private void HandleTargetDestroyed(GameObject target, bool isPeeking)

@@ -5,11 +5,13 @@ TagManager:
   serializedVersion: 3
   tags:
   - CinemachineTarget
+  - Body
+  - Head
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - background
+  - 
   - Water
   - UI
   - 
@@ -39,14 +41,8 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: background
-    uniqueID: 4118060665
-    locked: 0
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: UI
-    uniqueID: 72134145
     locked: 0
   m_RenderingLayers:
   - Default
