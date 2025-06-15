@@ -53,15 +53,15 @@ public class PlayerUIManager : MonoBehaviour
     {
         if (HitBody == null)
         {
-            HitBody = transform.Find("UIHolder/HitMarker/Body").gameObject;
+            HitBody = transform.Find("HitMarker/Body").gameObject;
         }
         if (HitHead == null)
         {
-            HitHead = transform.Find("UIHolder/HitMarker/Head").gameObject;
+            HitHead = transform.Find("HitMarker/Head").gameObject;
         }
         if (HitKill == null)
         {
-            HitKill = transform.Find("UIHolder/HitMarker/Kill").gameObject;
+            HitKill = transform.Find("HitMarker/Kill").gameObject;
         }
     }
 
@@ -69,15 +69,15 @@ public class PlayerUIManager : MonoBehaviour
     {
         if (HitBody == null)
         {
-            HitBody = transform.Find("UIHolder/HitMarker/Body").gameObject;
+            HitBody = transform.Find("HitMarker/Body").gameObject;
         }
         if (HitHead == null)
         {
-            HitHead = transform.Find("UIHolder/HitMarker/Head").gameObject;
+            HitHead = transform.Find("HitMarker/Head").gameObject;
         }
         if (HitKill == null)
         {
-            HitKill = transform.Find("UIHolder/HitMarker/Kill").gameObject;
+            HitKill = transform.Find("HitMarker/Kill").gameObject;
         }
     }
 
