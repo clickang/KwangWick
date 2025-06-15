@@ -61,12 +61,10 @@ public class Target : MonoBehaviour
         }
     }
 
-
-
     // 타겟이 맞았을 때 호출되는 메서드
-    public void Hit(int damage)
+    public bool Hit(int damage)
     {
-        if (currentHealth <=0 ) return;
+        if (currentHealth <= 0) return false;
 
         currentHealth -= damage;
         
@@ -80,7 +78,9 @@ public class Target : MonoBehaviour
         {
             ScoreManager.Instance?.AddScore(1); // 킬 점수 추가
             DestroyTarget();
+            return true; // 타겟이 파괴되었음을 알림
         }
+        return false;
     }
 
     // 타겟이 파괴될 때 (히트 또는 시간 초과)
