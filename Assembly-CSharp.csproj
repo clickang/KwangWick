@@ -72,6 +72,7 @@
     <Compile Include="Assets\Resource\Scripts\MouseSettings.cs" />
     <Compile Include="Assets\Target\PreventSpawnOverlap.cs" />
     <Compile Include="Assets\Survivalist\StarterAssets\InputSystem\StarterAssetsInputs.cs" />
+    <Compile Include="Assets\Player\Scripts\PlayerVFXManager.cs" />
     <Compile Include="Assets\Resource\Scripts\ButtonSetting.cs" />
     <Compile Include="Assets\Target\TargetSpawnManager.cs" />
     <Compile Include="Assets\Resource\Scripts\ChangeScene.cs" />

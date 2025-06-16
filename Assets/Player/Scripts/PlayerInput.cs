@@ -17,6 +17,7 @@ public class PlayerInput : MonoBehaviour
     [field: SerializeField] SoundManager SoundManager { get; set; }
     [field: SerializeField] Gun Gun { get; set; }
     [field: SerializeField] PlayerUIManager PlayerUIManager { get; set; }
+    [field: SerializeField] PlayerVFXManager PlayerVFXManager { get; set; }
 
     #endregion
 
@@ -34,6 +35,7 @@ public class PlayerInput : MonoBehaviour
         Animator.SetTrigger("Fire");
         SoundManager.GunFire();
         CameraController.ApplyRecoil();
+        PlayerVFXManager.PlayMuzzleFlash();
 
         if (Gun != null)
         {
@@ -82,6 +84,10 @@ public class PlayerInput : MonoBehaviour
         {
             PlayerUIManager = GetComponentInChildren<PlayerUIManager>();
         }
+        if (PlayerVFXManager == null)
+        {
+            PlayerVFXManager = GetComponentInChildren<PlayerVFXManager>();
+        }
     }
 
     public void OnValidate()
@@ -105,6 +111,10 @@ public class PlayerInput : MonoBehaviour
         if (PlayerUIManager == null)
         {
             PlayerUIManager = GetComponentInChildren<PlayerUIManager>();
+        }
+        if (PlayerVFXManager == null)
+        {
+            PlayerVFXManager = GetComponentInChildren<PlayerVFXManager>();
         }
     }
 
