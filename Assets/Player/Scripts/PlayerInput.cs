@@ -5,48 +5,54 @@ using UnityEngine.InputSystem;
 public class PlayerInput : MonoBehaviour
 {
     /*
-     * [ÇÃ·¹ÀÌ¾îÀÇ ÀÔ·ÂÀ» Ã³¸®ÇÏ´Â ½ºÅ©¸³Æ®ÀÔ´Ï´Ù.]
-     * ÇÏµå¿þ¾î ÀÔ·ÂÀÌ µé¾î¿À¸é ÀûÀýÇÏ°Ô º¯È¯ÇÏ¿© ÇÊ¿äÇÑ ÇÔ¼ö·Î Àü´ÞÇÕ´Ï´Ù.
+     * [플레이어의 입력을 처리하는 스크립트입니다.]
+     * 마우스 이동, 클릭, Q, E를 받아서 처리합니다.
      */
 
     #region Variables
 
-    [Tooltip("ÄÄÆ÷³ÍÆ®")]
+    [Tooltip("컴포넌트")]
     [field: SerializeField, Header("Components")] FirstPersonCameraController CameraController { get; set; }
     [field: SerializeField] Animator Animator { get; set; }
     [field: SerializeField] SoundManager SoundManager { get; set; }
     [field: SerializeField] Gun Gun { get; set; }
+    [field: SerializeField] PlayerUIManager PlayerUIManager { get; set; }
+    [field: SerializeField] PlayerVFXManager PlayerVFXManager { get; set; }
 
     #endregion
 
     #region Input Handlers
 
-    // ¸¶¿ì½º ¿òÁ÷ÀÓÀ» Ã³¸®ÇÕ´Ï´Ù.
+    // 마우스 이동을 처리합니다.
     public void OnLook(InputValue value)
     {
         CameraController.LookInput = value.Get<Vector2>();
     }
 
-    // ¸¶¿ì½º ¿ÞÂÊ ¹öÆ°À» Ã³¸®ÇÕ´Ï´Ù.
+    // 마우스 왼쪽 클릭을 처리합니다.
     public void OnAttack()
     {
         Animator.SetTrigger("Fire");
         SoundManager.GunFire();
         CameraController.ApplyRecoil();
+        PlayerVFXManager.PlayMuzzleFlash();
 
         if (Gun != null)
         {
-            Gun.Shoot();
+            int hitType = Gun.Shoot();
+
+            // HitType에 따라 UI를 토글합니다.
+            PlayerUIManager.ToggleHitUI(hitType);
         }
     }
 
-    // Q ¹öÆ°À» Ã³¸®ÇÕ´Ï´Ù.
+    // Q 키를 처리합니다.
     public void OnLeanLeft(InputValue value)
     {
         CameraController.LeanLeftToggle = value.Get<float>();
     }
 
-    // E ¹öÆ°À» Ã³¸®ÇÕ´Ï´Ù.
+    // E 키를 처리합니다.
     public void OnLeanRight(InputValue value)
     {
         CameraController.LeanRightToggle = value.Get<float>();
@@ -74,6 +80,14 @@ public class PlayerInput : MonoBehaviour
         {
             Gun = GetComponentInChildren<Gun>();
         }
+        if (PlayerUIManager == null)
+        {
+            PlayerUIManager = GetComponentInChildren<PlayerUIManager>();
+        }
+        if (PlayerVFXManager == null)
+        {
+            PlayerVFXManager = GetComponentInChildren<PlayerVFXManager>();
+        }
     }
 
     public void OnValidate()
@@ -89,6 +103,18 @@ public class PlayerInput : MonoBehaviour
         if (SoundManager == null)
         {
             SoundManager = GetComponentInChildren<SoundManager>();
+        }
+        if (Gun == null)
+        {
+            Gun = GetComponentInChildren<Gun>();
+        }
+        if (PlayerUIManager == null)
+        {
+            PlayerUIManager = GetComponentInChildren<PlayerUIManager>();
+        }
+        if (PlayerVFXManager == null)
+        {
+            PlayerVFXManager = GetComponentInChildren<PlayerVFXManager>();
         }
     }
 

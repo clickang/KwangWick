@@ -1,5 +1,13 @@
 using UnityEngine;
 
+enum HitType
+{
+    None = 0,
+    Body = 1,
+    Head = 2,
+    Kill = 3
+}
+
 public class Gun : MonoBehaviour
 {
 	[SerializeField] private Transform cameraTransform;
@@ -13,7 +21,7 @@ public class Gun : MonoBehaviour
 		}
 	}
 
-    public void Shoot()
+    public int Shoot()
 	{
     	Ray ray = new Ray(cameraTransform.position, cameraTransform.forward);
    		if (Physics.Raycast(ray, out RaycastHit hit, 100f))
@@ -24,17 +32,29 @@ public class Gun : MonoBehaviour
         	if (target == null)
         	{
             	Debug.Log("Target component not found on hit object!");
-        	}
+            }
         	else
         	{
             	Debug.Log("Target found, calling Hit()");
-            	target.Hit(hit.collider.CompareTag("Head") ? 3 : 1);
-        	}
+                int damage = hit.collider.CompareTag("Head") ? 3 : 1;
+                bool killed = target.Hit(damage);
+
+                if(killed)
+                {
+                    Debug.Log("Target killed!");
+                    return (int)HitType.Kill;
+                }
+                else
+                {
+                    Debug.Log("Target hit but not killed.");
+                    return damage > 1 ? (int)HitType.Head : (int)HitType.Body;
+                }
+            }
     	}
     	else
     	{
         	Debug.Log("Nothing hit by raycast!");
     	}
-
-	}
+        return (int)HitType.None;
+    }
 }

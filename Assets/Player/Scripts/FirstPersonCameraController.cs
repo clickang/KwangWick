@@ -4,7 +4,7 @@ using UnityEngine;
 public class FirstPersonCameraController : MonoBehaviour
 {
     /*
-     * 일인칭 카메라와 관련된 기능을 구현하는 스크립트입니다.
+     * [일인칭 카메라와 관련된 기능을 구현하는 스크립트입니다.]
      * 회전, 기울이기, 반동 등을 처리합니다.
      */
 
@@ -115,6 +115,7 @@ public class FirstPersonCameraController : MonoBehaviour
     {
         if (!UseCameraRecoil) return;
 
+        // 반동은 임의로 X, Y, Z축에 적용됩니다.
         float recoilX = -1f * RecoilAmount.x;
         float recoilY = Random.Range(-RecoilAmount.y, RecoilAmount.y);
         float recoilZ = Random.Range(-RecoilAmount.z, RecoilAmount.z);

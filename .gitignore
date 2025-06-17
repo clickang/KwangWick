@@ -76,3 +76,8 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 *.dwlt
+
+# Asset Store 에셋 폴더 제외
+/[Aa]ssets/Military
+/[Aa]ssets/Survivalist
+/[Aa]ssets/TirgamesAssets

@@ -4,7 +4,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     /*
-     * »ç¿îµå °ü·Ã ±â´ÉÀ» ±¸ÇöÇÏ´Â ½ºÅ©¸³Æ®ÀÔ´Ï´Ù.
+     * [사운드를 관리하는 스크립트입니다.]
      */
 
     #region Variables
@@ -15,7 +15,7 @@ public class SoundManager : MonoBehaviour
 
     #region User Methods
 
-    // ÃÑ±â ¹ß»ç ¼Ò¸®¸¦ Àç»ýÇÕ´Ï´Ù.
+    // 총기를 발사할 때 호출되는 메소드입니다.
     public void GunFire()
     {
         if (AudioSourceList == null || AudioSourceList.Count == 0)
@@ -31,8 +31,7 @@ public class SoundManager : MonoBehaviour
         }
 
         AudioSourceList[0].PlayOneShot(AudioSourceList[0].clip);
-}
-
+    }
 
     #endregion
 }
